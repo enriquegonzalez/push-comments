@@ -1,0 +1,58 @@
+// This is a manifest file that'll be compiled into application.js, which will include all the files
+// listed below.
+//
+// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
+// or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
+//
+// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
+// compiled file.
+//
+// Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
+// about supported directives.
+//
+//= require angular
+//= require angular-resource
+//= require angular-route
+//= require jquery
+//= require jquery_ujs
+//= require turbolinks
+//= require_tree .
+
+var notifications = angular.module('notifications', ['ngRoute', 'ngResource']);
+
+notifications.config(function($httpProvider, $routeProvider) {
+  $httpProvider.defaults.headers.common['X-CSRF-Token'] = document.querySelector('meta[name=csrf-token]').content;
+  $routeProvider
+  .when('/', {
+    templateUrl: '/assets/dashboard.html',
+    controller: 'CommentsCtrl'
+  })
+  .otherwise({
+    route: '/'
+  });
+});
+
+notifications.factory('Comment', function($resource) {
+  return $resource("/posts/:post_id/comments.json", {post_id: '@post.id'});
+});
+
+
+notifications.controller('CommentsCtrl', function($scope,$routeParams, Comment){
+  $scope.comments = Comment.query({post_id: 1});
+  console.log($scope.comments)
+});
+
+
+var pusher = new Pusher('bfe99c4616e3ab56267c');
+var channel = pusher.subscribe('comments_channel');
+    // channel.bind('new_comment', function(data) {
+    //   $scope.comments.push(data);
+    //   $scope.$apply();
+    // });
+
+    channel.bind('new_comment', function(data) {
+      $scope.comments = Comments.query();
+      $scope.numNewComments =
+      $scope.$apply();
+    });
+
