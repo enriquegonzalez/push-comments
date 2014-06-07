@@ -54,6 +54,15 @@ notifications.factory('Comments', function($resource) {
 // CONTROLLERS
 notifications.controller('PostsCtrl', function($scope, Posts){
   $scope.posts = Posts.query();
+  $scope.numNewComments = 0;
+
+// PUSH NOTIFICATIONS
+var pusher = new Pusher('bfe99c4616e3ab56267c');
+var channel = pusher.subscribe('comments_channel');
+    channel.bind('new_comment', function() {
+      $scope.numNewComments++
+      $scope.$apply();
+    });
 });
 
 notifications.controller('PostDetailCtrl', function($scope,$routeParams, Posts){
@@ -65,19 +74,3 @@ notifications.controller('CommentsCtrl', function($scope,$routeParams, Comments)
   $scope.comments = Comments.query({post_id: $routeParams.post_id});
   console.log($scope.comments)
 });
-
-
-// PUSH NOTIFICATIONS
-var pusher = new Pusher('bfe99c4616e3ab56267c');
-var channel = pusher.subscribe('comments_channel');
-    // channel.bind('new_comment', function(data) {
-    //   $scope.comments.push(data);
-    //   $scope.$apply();
-    // });
-
-    channel.bind('new_comment', function(data) {
-      $scope.comments = Comments.query();
-      $scope.numNewComments =
-      $scope.$apply();
-    });
-

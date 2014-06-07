@@ -2,7 +2,7 @@
 <hr>
 <div ng-controller="PostsCtrl">
   <ul class="list">
-    <li ng-repeat="post in posts"><h1><a href="#/post/{{ post.id }}">{{ post.title}}</a></h1><p><strong>New Comments:</strong> {{numNewComments}}</p></li>
+    <li ng-repeat="post in posts"><h1><a href="#/post/{{ post.id }}">{{ post.title}}</a></h1><p><a href="#" ng-show="numNewComments" ng-click="showComments($event)"><strong>New Comments:</strong> {{ numNewComments }}</a></p></li>
   </ul>
 </div>
 
