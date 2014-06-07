@@ -1,11 +1,8 @@
+<h1>Enrique's Blog</h1>
+<hr>
 <div ng-controller="PostsCtrl">
-    <ul class="list">
-      <li ng-repeat="post in posts"><a href="#/{{ post.id }}">{{ post.title}}</a>
-    </ul>
+  <ul class="list">
+    <li ng-repeat="post in posts"><h1><a href="#/post/{{ post.id }}">{{ post.title}}</a></h1><p><strong>New Comments:</strong> {{numNewComments}}</p></li>
+  </ul>
 </div>
 
-<div ng-controller="CommentsCtrl">
-    <ul class="list">
-      <li ng-repeat="comment in comments"><a href="#/note/{{ note.id }}">{{ comment.message}}</a></li>
-    </ul>
-</div>

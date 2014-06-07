@@ -1,0 +1,9 @@
+<h1>Enrique's Blog</h1>
+<nav><p><a href="/">Dashboard</a></p></nav>
+<hr>
+<div ng-controller="PostDetailCtrl">
+  <h2>{{ post.title}}</h2>
+  <p>{{post.body}}<p>
+  <p><a href="#/post/{{ post.id }}/comments">Comments</a></p>
+</div>
+

@@ -1,0 +1,8 @@
+<h1>Enrique's Blog</h1>
+<nav><p><a href="/">Dashboard</a></p></nav>
+<hr>
+<div ng-controller="CommentsCtrl">
+  <ul class="list">
+    <li ng-repeat="comment in comments"><p><strong>{{comment.name}}</strong> said: <em>{{ comment.message}}</em></p></li>
+  </ul>
+</div>

@@ -20,6 +20,7 @@
 
 var notifications = angular.module('notifications', ['ngRoute', 'ngResource']);
 
+// ROUTES
 notifications.config(function($httpProvider, $routeProvider) {
   $httpProvider.defaults.headers.common['X-CSRF-Token'] = document.querySelector('meta[name=csrf-token]').content;
   $routeProvider
@@ -27,29 +28,46 @@ notifications.config(function($httpProvider, $routeProvider) {
     templateUrl: '/assets/dashboard.html',
     controller: 'PostsCtrl'
   })
+  .when('/post/:id', {
+    templateUrl: '/assets/post.html',
+    controller: 'PostDetailCtrl'
+  })
+  .when('/post/:post_id/comments', {
+    templateUrl: '/assets/comments.html',
+    controller: 'CommentsCtrl'
+  })
   .otherwise({
-    route: '/'
+    redirectTo: '/'
   });
 });
 
-notifications.factory('Post', function($resource) {
+// FACTORIES
+notifications.factory('Posts', function($resource) {
   return $resource("/posts/:id.json", {id: '@id'});
 });
 
-notifications.factory('Comment', function($resource) {
-  return $resource("/posts/:post_id/comments.json", {post_id: '@post.id'});
+notifications.factory('Comments', function($resource) {
+  return $resource("/posts/:post_id/comments/:comment_id.json", {id: '@post_id'});
 });
 
-notifications.controller('PostsCtrl', function($scope,$routeParams, Post){
-  $scope.posts = Post.query();
-  console.log($scope.posts)
+
+// CONTROLLERS
+notifications.controller('PostsCtrl', function($scope, Posts){
+  $scope.posts = Posts.query();
 });
 
-notifications.controller('CommentsCtrl', function($scope,$routeParams, Comment){
-  $scope.comments = Comment.query({post_id: 1});
+notifications.controller('PostDetailCtrl', function($scope,$routeParams, Posts){
+  $scope.post = Posts.get({id: $routeParams.id});
+
+});
+
+notifications.controller('CommentsCtrl', function($scope,$routeParams, Comments){
+  $scope.comments = Comments.query({post_id: $routeParams.post_id});
   console.log($scope.comments)
 });
 
+
+// PUSH NOTIFICATIONS
 var pusher = new Pusher('bfe99c4616e3ab56267c');
 var channel = pusher.subscribe('comments_channel');
     // channel.bind('new_comment', function(data) {
