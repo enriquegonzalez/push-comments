@@ -43,7 +43,7 @@
 
 <ul>
   <% @comments.each do |comment| %>
-    <li><%= comment.message %></li>
+    <li><strong><%= comment.name %></strong> said: <em> &#8220;<%= comment.message %>&#8221;</em></li>
   <% end %>
 </ul>
 
