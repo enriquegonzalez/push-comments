@@ -47,7 +47,7 @@ notifications.factory('Posts', function($resource) {
 });
 
 notifications.factory('Comments', function($resource) {
-  return $resource("/posts/:post_id/comments/:comment_id.json", {id: '@post_id'});
+  return $resource("/posts/:post_id/comments/:id.json", {id: '@post_id'});
 });
 
 
